@@ -1,11 +1,13 @@
 from keras.utils import image_dataset_from_directory
 import matplotlib.pyplot as plt
-train_path=r'C:\Users\shiva\Downloads\emtion_from_face\train'
-test_path=r'C:\Users\shiva\Downloads\emtion_from_face\test'
+train_path=r'path_of_training_dataset'
+test_path=r'jpath_of_testing_dataset'
 
+#loading dataset
 train_data=image_dataset_from_directory(train_path,batch_size=32,image_size=(48,48),label_mode='categorical')
 test_data=image_dataset_from_directory(test_path,batch_size=32,image_size=(48,48),label_mode='categorical')
 
+#import any pretrained model(VGG16)
 import keras
 from keras.layers import Flatten,Dense,Dropout
 from keras.applications.vgg16 import VGG16
@@ -24,11 +26,13 @@ model.summary()
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 history=model.fit(train_data,epochs=30,validation_data=test_data)
 
-model.save('conv_base.h5')
+#save the trained data to a file(convo_base)
+model.save('conv_base.h5') 
 loss,accuracy=model.evaluate(test_data)
 
 print(f'loss={loss} ,accuracy={accuracy}')
 
+#plotting the training data
 plt.figure(figsize=(12, 6))
 
 plt.subplot(1, 2, 1)
@@ -39,7 +43,6 @@ plt.ylabel('Accuracy')
 plt.xlabel('Epoch')
 plt.legend(loc='upper left')
 
-# Plot training & validation loss values
 plt.subplot(1, 2, 2)
 plt.plot(history.history['loss'], label='Training Loss')
 plt.plot(history.history['val_loss'], label='Validation Loss')
