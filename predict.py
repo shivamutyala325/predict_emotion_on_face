@@ -2,9 +2,10 @@ import cv2
 import numpy as np
 from keras.models import load_model
 
-classifier=cv2.CascadeClassifier(r'C:\Users\shiva\PycharmProjects\ML_Standard\venv\Lib\site-packages\cv2\data\haarcascade_frontalface_default.xml')
+classifier=cv2.CascadeClassifier(r'\haarcascade_frontalface_default.xml')
 video=cv2.VideoCapture(0)
 
+#load the learned data (convo_base)
 model=load_model(r'conv_base.h5')
 exp=['angry', 'disgusted', 'fearful', 'happy', 'neutral', 'sad', 'surprised']
 
@@ -16,12 +17,8 @@ while True:
         for (a,b,c,d) in faces:
             req_face=frame[b:b+d,a:a+c]
             req_face=cv2.resize(req_face,(48,48))
-            #cv2.imshow('req_face',req_face)
             req_face=np.expand_dims(req_face,axis=0)
 
-
-            #print(req_face.shape)
-            #cv2.waitKey(0)
             y=model.predict(req_face)
             y=np.argmax(y)
             print(exp[y])
